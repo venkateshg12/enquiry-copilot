@@ -5,7 +5,7 @@ The phase checklist lives in [../docs/phases/README.md](../docs/phases/README.md
 
 ## Current phase
 
-- Phase: 05 — authenticate, Google sign-in
+- Phase: 06 — Rate limiting
 - [ ] (copy Definition of done from phase-01 when starting)
 
 ## Review

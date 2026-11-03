@@ -19,3 +19,4 @@ from `docs/phases/`. Rules in `CLAUDE.md`. Status in `tracker.md`.
 - Phase 02: pino logger (swappable sink `setLogDestination`), requestId, pii masks. `.env` (gitignored) has a generated CONTACT_HASH_SALT. `pii.test.ts` is written but vitest arrives in Phase 31 (tsconfig excludes tests).
 - Phase 03: Prisma 7.10.1 + tenant extension; `pnpm --filter api db:migrate:dev --name x < /dev/null`.
 - Phase 04: User/Session/VerificationLink + /auth register|login|refresh|logout|verify|resend. No email until Phase 08: dev verification link is logged at debug (LOG_LEVEL=debug). `.env` has generated JWT secrets. Verify DB scratch: `truncate users cascade`.
+- Phase 05: authenticate/requireAdmin/session/Google/reset. 👤 owner: create a Google OAuth *Web* client id (.env has a placeholder; real sign-in untested). No jq on this machine — use python for JSON in checks. Reset token is in the POST body.
