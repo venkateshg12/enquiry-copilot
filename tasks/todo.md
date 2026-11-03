@@ -5,7 +5,7 @@ The phase checklist lives in [../docs/phases/README.md](../docs/phases/README.md
 
 ## Current phase
 
-- Phase: 04 — Accounts, sessions
+- Phase: 05 — authenticate, Google sign-in
 - [ ] (copy Definition of done from phase-01 when starting)
 
 ## Review

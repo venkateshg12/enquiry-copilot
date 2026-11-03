@@ -4,6 +4,7 @@ import { fail } from "../utils/api";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../constants/https";
 import { appErrorCode } from "../constants/appErrorCode";
 import { logger } from "../utils/logger";
+import { clearAuthCookies, REFRESH_PATH } from "../utils/auth";
 import z from "zod";
 
 /*
@@ -37,7 +38,9 @@ export function errorHandler(
     if ((error as { type?: string })?.type === "entity.too.large") {
         return res.status(413).json(fail("Request body too large", appErrorCode.ValidationError));
     }
-    // Phase 04: clear the auth cookies when the failing request was the refresh path.
+    if (_req.path === REFRESH_PATH) {
+        clearAuthCookies(res);
+    }
     if (error instanceof AppError) {
         if (error.statusCode >= 500) {
             logger.error({ err: error }, error.message);

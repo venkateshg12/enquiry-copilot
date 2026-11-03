@@ -74,21 +74,7 @@ const tenantExtension = Prisma.defineExtension({
     name: "tenant-scope",
     query: {
         $allModels: {
-            // Phase 04: with no models yet Prisma types $allModels as `never`. Once the first model
-            // exists TS reports this directive as unused: delete it and the parameter annotation
-            // below (back to PaperTrail's inferred params).
-            // @ts-expect-error no models in the schema yet
-            async $allOperations({
-                model,
-                operation,
-                args,
-                query,
-            }: {
-                model: string;
-                operation: string;
-                args: unknown;
-                query: (args: any) => Promise<any>;
-            }) {
+            async $allOperations({ model, operation, args, query }) {
                 if (!TENANT_MODELS.has(model)) return query(args);
 
                 const orgId = tenantOrgId(`${model}.${operation}`);

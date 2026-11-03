@@ -17,4 +17,5 @@ from `docs/phases/`. Rules in `CLAUDE.md`. Status in `tracker.md`.
 - Phase 00: monorepo, 3 shared packages, docker-compose (postgres 17, redis, redis-cache), api placeholder.
 - Phase 01: Express 5 bootstrap (env, error trio, envelope, createApp, /health, ordered shutdown, worker.ts stub). Port 5000 is also used by Playbook dev API — verify the API with PORT=5050 and 127.0.0.1.
 - Phase 02: pino logger (swappable sink `setLogDestination`), requestId, pii masks. `.env` (gitignored) has a generated CONTACT_HASH_SALT. `pii.test.ts` is written but vitest arrives in Phase 31 (tsconfig excludes tests).
-- Phase 03: Prisma 7.10.1 + tenant extension; `pnpm --filter api db:migrate:dev --name x < /dev/null`. prisma.ts carries a temporary `@ts-expect-error` (no models yet) — remove in Phase 04.
+- Phase 03: Prisma 7.10.1 + tenant extension; `pnpm --filter api db:migrate:dev --name x < /dev/null`.
+- Phase 04: User/Session/VerificationLink + /auth register|login|refresh|logout|verify|resend. No email until Phase 08: dev verification link is logged at debug (LOG_LEVEL=debug). `.env` has generated JWT secrets. Verify DB scratch: `truncate users cascade`.
