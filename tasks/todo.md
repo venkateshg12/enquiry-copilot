@@ -5,7 +5,7 @@ The phase checklist lives in [../docs/phases/README.md](../docs/phases/README.md
 
 ## Current phase
 
-- Phase: 07 — Response cache
+- Phase: 08 — BullMQ, DLQ, email
 - [ ] (copy Definition of done from phase-01 when starting)
 
 ## Review

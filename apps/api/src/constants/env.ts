@@ -61,5 +61,7 @@ export const CACHE_REDIS_HOST = getEnv("CACHE_REDIS_HOST", REDIS_HOST);
 export const CACHE_REDIS_PORT = getEnv("CACHE_REDIS_PORT", "6380");
 export const CACHE_REDIS_USERNAME = getEnv("CACHE_REDIS_USERNAME", REDIS_USERNAME);
 export const CACHE_REDIS_PASSWORD = getEnv("CACHE_REDIS_PASSWORD", REDIS_PASSWORD);
+// Emergency off-switch: "false" makes every cache read a miss and every write a no-op.
+export const CACHE_ENABLED = getEnv("CACHE_ENABLED", "true");
 // Accepted form/email messages per business per 24 h before new ones are held (Phase 13).
 export const INTAKE_DAILY_CAP = getEnv("INTAKE_DAILY_CAP", "300");

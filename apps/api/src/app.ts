@@ -11,6 +11,7 @@ import { isDbHealthy } from "./config/db";
 import { extractClientIp, trustProxy } from "./utils/rateLimiter/ipExtractor";
 import { visitorIdMiddleware } from "./middleware/visitorId";
 import { globalLimiter } from "./config/rateLimiter";
+import { cache } from "./utils/cache";
 import { authRoutes } from "./routes/auth.route";
 import sessionRoutes from "./routes/session.route";
 
@@ -70,10 +71,14 @@ export const createApp = () => {
 
     // Health first, so routers that call router.use(authenticate) can never shadow it.
     app.get("/health", async (_req, res) => {
-        const dbUp = await isDbHealthy();
-        // Phases 06–07: redis and cache are reported here but never gate the status code.
+        const [dbUp, redisReady] = await Promise.all([isDbHealthy(), cache.ping()]);
+        // Only the database gates the status code: the app works without the cache.
         return res.status(dbUp ? 200 : 503).json(
-            ok({ status: dbUp ? "ok" : "degraded", database: dbUp ? "up" : "down" })
+            ok({
+                status: dbUp ? "ok" : "degraded",
+                database: dbUp ? "up" : "down",
+                redis: redisReady ? "up" : "down",
+            })
         );
     });
 
