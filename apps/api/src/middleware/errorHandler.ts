@@ -3,6 +3,7 @@ import { AppError } from "../utils/errors";
 import { fail } from "../utils/api";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "../constants/https";
 import { appErrorCode } from "../constants/appErrorCode";
+import { logger } from "../utils/logger";
 import z from "zod";
 
 /*
@@ -39,14 +40,14 @@ export function errorHandler(
     // Phase 04: clear the auth cookies when the failing request was the refresh path.
     if (error instanceof AppError) {
         if (error.statusCode >= 500) {
-            console.error(error.message, error); // Phase 02: logger
+            logger.error({ err: error }, error.message);
             // Phase 32: Sentry.captureException(error)
         } else {
-            // Phase 02: logger.debug({ code, status }, message)
+            logger.debug({ code: error.errorCode, status: error.statusCode }, error.message);
         }
         return res.status(error.statusCode).json(fail(error.message, error.errorCode ?? "APP_ERROR"));
     }
-    console.error("unhandled error", error); // Phase 02: logger
+    logger.error({ err: error }, "unhandled error");
     // Phase 32: Sentry.captureException(error)
 
     return res.status(INTERNAL_SERVER_ERROR).json(fail("Internal Server Error", "INTERNAL_SERVER_ERROR"));

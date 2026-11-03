@@ -18,7 +18,10 @@ One entry per correction or surprise: **pattern → rule that prevents it**.
 
 ## AI Enquiry Assistant
 
-_(add as you go)_
+- Logs outlive and out-travel the database (drains, laptops, tickets) → **log `messageId`, `orgId`, `category`, `stage`, counts and durations; never a body, a contact or a draft.** Logger redaction is only the backstop (paths, one level deep).
+- `pkill -f <path>` from a shell whose own command line contains that path kills the shell → kill by saved PID.
+- Playbook's dev API also listens on :5000 (`localhost` resolves to IPv6 first) → verify this API on `PORT=5050` against `127.0.0.1`.
+- `_(add as you go)_
 
 ## Carried over from the portfolio
 

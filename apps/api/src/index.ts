@@ -2,6 +2,7 @@
 import "dotenv/config";
 import { NODE_ENV, PORT, RUN_WORKERS_IN_API } from "./constants/env";
 import { createApp } from "./app";
+import { logger } from "./utils/logger";
 import { closeWorkers, initSchedulers, startRelay } from "./worker";
 
 async function main() {
@@ -10,9 +11,9 @@ async function main() {
     if (RUN_WORKERS_IN_API !== "false") {
         await initSchedulers();
         startRelay();
-        console.log("[startup] in-process workers, schedulers, and outbox relay initialized"); // Phase 02: logger
+        logger.info("[startup] in-process workers, schedulers, and outbox relay initialized");
     } else {
-        console.log("[startup] RUN_WORKERS_IN_API=false — worker processing delegated to standalone worker"); // Phase 02: logger
+        logger.info("[startup] RUN_WORKERS_IN_API=false — worker processing delegated to standalone worker");
     }
 
     if (NODE_ENV === "production") {
@@ -23,7 +24,7 @@ async function main() {
 
     const BACKEND_PORT = Number(PORT) || 5000;
     const server = app.listen(BACKEND_PORT, "0.0.0.0", () => {
-        console.log(`Server is listening to the port: ${BACKEND_PORT}`); // Phase 02: logger
+        logger.info(`Server is listening to the port: ${BACKEND_PORT}`);
     });
 
     /*
@@ -37,11 +38,11 @@ async function main() {
     const shutdown = async (reason: string) => {
         if (shuttingDown) return;
         shuttingDown = true;
-        console.log(`[shutdown] ${reason} — closing`); // Phase 02: logger
+        logger.info(`[shutdown] ${reason} — closing`);
 
         // A client holding a keep-alive connection open shouldn't hold the deploy open with it.
         const forceExit = setTimeout(() => {
-            console.error("[shutdown] in-flight requests did not finish in time — exiting anyway"); // Phase 02: logger
+            logger.error("[shutdown] in-flight requests did not finish in time — exiting anyway");
             process.exit(1);
         }, SHUTDOWN_GRACE_MS);
         forceExit.unref();
@@ -55,10 +56,10 @@ async function main() {
             // Phase 07: await cache.close()
             // Phase 03: await disconnectDB()
             // Phase 32: await flushObservability()
-            console.log("[shutdown] complete"); // Phase 02: logger
+            logger.info("[shutdown] complete");
             process.exit(0);
         } catch (error) {
-            console.error("[shutdown] failed", error); // Phase 02: logger
+            logger.error({ err: error }, "[shutdown] failed");
             process.exit(1);
         }
     };
@@ -71,17 +72,17 @@ async function main() {
       taken down the same orderly path.
      */
     process.on("unhandledRejection", (reason) => {
-        console.error("[fatal] unhandled promise rejection", reason); // Phase 02: logger
+        logger.error({ reason }, "[fatal] unhandled promise rejection");
         void shutdown("unhandledRejection");
     });
 
     process.on("uncaughtException", (error) => {
-        console.error("[fatal] uncaught exception", error); // Phase 02: logger
+        logger.error({ err: error }, "[fatal] uncaught exception");
         void shutdown("uncaughtException");
     });
 }
 
 main().catch((error) => {
-    console.error("failed to start", error); // Phase 02: logger
+    logger.error({ err: error }, "failed to start");
     process.exit(1);
 });

@@ -1,4 +1,5 @@
 import "dotenv/config";
+import { logger } from "./utils/logger";
 
 /*
   The queue workers' entry point. Phase 08 adds the email worker, Phase 13 the outbox relay,
@@ -10,5 +11,5 @@ export const startRelay = () => {};
 export const closeWorkers = async () => {};
 
 if (require.main === module) {
-    console.log("worker started (no workers until Phase 08)"); // Phase 02: logger
+    logger.info("worker started (no workers until Phase 08)");
 }

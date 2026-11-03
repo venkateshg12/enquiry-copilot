@@ -22,3 +22,8 @@ export const CLIENT_URL = getEnv("CLIENT_URL", CORS_ORIGIN.split(",")[0].trim())
 
 // "false" in production, where src/worker.ts runs as its own process.
 export const RUN_WORKERS_IN_API = getEnv("RUN_WORKERS_IN_API", "true");
+export const LOG_LEVEL = getEnv("LOG_LEVEL", "info");
+export const SERVICE_NAME = getEnv("SERVICE_NAME", "api");
+// Salt for contactRef(): log lines can correlate a contact without containing it. Rotating it
+// only breaks correlation across the rotation, nothing else.
+export const CONTACT_HASH_SALT = getEnv("CONTACT_HASH_SALT");

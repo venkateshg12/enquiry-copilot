@@ -5,7 +5,7 @@ The phase checklist lives in [../docs/phases/README.md](../docs/phases/README.md
 
 ## Current phase
 
-- Phase: 02 — Logging, PII redaction
+- Phase: 03 — PostgreSQL + Prisma
 - [ ] (copy Definition of done from phase-01 when starting)
 
 ## Review
