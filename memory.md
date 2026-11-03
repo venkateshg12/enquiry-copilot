@@ -1,0 +1,17 @@
+# memory.md — short build memory
+
+## What this is
+AI Enquiry Assistant: classify → extract → draft → code checks → human approval → send. Express 5 +
+PostgreSQL 17/Prisma 7.10.1 + Redis ×2 + BullMQ API, Next.js web, one-file widget. Built phase by phase
+from `docs/phases/`. Rules in `CLAUDE.md`. Status in `tracker.md`.
+
+## Environment
+- Same machine setup as the Playbook (see `~/Code/prompt-engineering-playbook/memory.md`): Node from
+  `.nvmrc` via nvm, Docker Desktop on Windows started first, `prisma migrate dev < /dev/null` in scripts.
+- NVIDIA retired llama-3.x on 26 Aug 2026 (410): pick current model ids in Phase 15, never assume.
+
+## Decisions / deviations
+- Phase 00: `.gitignore` is PaperTrail's minus the `/CLAUDE.md` line (this repo checks CLAUDE.md in) plus `apps/api/src/generated/`; `.prettierignore` copied too. Playbook's docker containers were stopped (not removed) to free 5432/6379/6380; `docker start playbook-postgres playbook-redis playbook-redis-cache` brings them back (stop ours first).
+
+## Built so far
+- Phase 00: monorepo, 3 shared packages, docker-compose (postgres 17, redis, redis-cache), api placeholder.
