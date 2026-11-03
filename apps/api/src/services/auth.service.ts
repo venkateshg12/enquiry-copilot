@@ -4,8 +4,6 @@ import { prisma, type Prisma } from "../db/prisma";
 import { nullIfNotFound } from "../db/errors";
 import { appAssert } from "../utils/errors";
 import { BAD_REQUEST, CONFLICT, NOT_FOUND, UNAUTHORIZED } from "../constants/https";
-import { CLIENT_URL, NODE_ENV } from "../constants/env";
-import { logger } from "../utils/logger";
 import { appErrorCode } from "../constants/appErrorCode";
 import { VerificationLinkType } from "../constants/verificationLinkType";
 import { tenMinutesFromNow, thirtyDaysFromNow } from "../utils/date";
@@ -21,6 +19,7 @@ import {
 } from "../utils/auth";
 import { RefreshTokenPayload } from "../types/auth.types";
 import { cache, sessionCacheKey } from "../utils/cache";
+import { EmailProducer } from "../jobs/producers/email.producer";
 import { toSafeUser, type UserRecord } from "../types/user.types";
 
 /*
@@ -124,10 +123,11 @@ const issueEmailVerificationLink = async (user: UserRecord) => {
         }
     });
 
-    // Phase 08: await EmailProducer.sendVerifyMail({ userId: user.id, email: user.email, verificationToken: token });
-    if (NODE_ENV === "development") {
-        logger.debug({ url: `${CLIENT_URL}/auth/verify/${token}` }, "dev verification link (no email until Phase 08)");
-    }
+    await EmailProducer.sendVerifyMail({
+        userId: user.id,
+        email: user.email,
+        verificationToken: token,
+    });
 };
 
 
@@ -269,10 +269,12 @@ export const sentResetPasswordEmail = async (email: string) => {
         }
     });
 
-    // Phase 08: await EmailProducer.sendPasswordReset({ userId: user.id, email: user.email, resetToken: token });
-    if (NODE_ENV === "development") {
-        logger.debug({ url: `${CLIENT_URL}/password/reset/${token}` }, "dev reset link (no email until Phase 08)");
-    }
+    //send password reset email via BullMQ
+    await EmailProducer.sendPasswordReset({
+        userId: user.id,
+        email: user.email,
+        resetToken: token,
+    });
 
     return { message: genericMessage }
 }

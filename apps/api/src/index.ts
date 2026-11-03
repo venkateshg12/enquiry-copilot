@@ -5,15 +5,18 @@ import { createApp } from "./app";
 import { logger } from "./utils/logger";
 import { connectDB, disconnectDB } from "./config/db";
 import { cache } from "./utils/cache";
-import { closeWorkers, initSchedulers, startRelay } from "./worker";
 
 async function main() {
     // Phase 15: setCallRecorder(recordCall)
     await connectDB();
+    let workers: typeof import("./worker.js") | null = null;
     if (RUN_WORKERS_IN_API !== "false") {
-        await initSchedulers();
-        startRelay();
-        logger.info("[startup] in-process workers, schedulers, and outbox relay initialized");
+        // Dynamic on purpose: the workers start when ./worker is loaded. A static
+        // `import … from "./worker"` would start them even with RUN_WORKERS_IN_API=false.
+        workers = await import("./worker.js");
+        await workers.initSchedulers();
+        workers.startRelay();
+        logger.info("[startup] in-process workers and schedulers initialized");
     } else {
         logger.info("[startup] RUN_WORKERS_IN_API=false — worker processing delegated to standalone worker");
     }
@@ -54,9 +57,7 @@ async function main() {
 
         try {
             await new Promise<void>((resolve) => server.close(() => resolve()));
-            if (RUN_WORKERS_IN_API !== "false") {
-                await closeWorkers();
-            }
+            await workers?.closeWorkers();
             // Phase 21: await closePubSub()
             await cache.close();
             await disconnectDB();

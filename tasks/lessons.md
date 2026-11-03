@@ -28,6 +28,9 @@ One entry per correction or surprise: **pattern → rule that prevents it**.
 - `pnpm run db:migrate:dev --name x` appends args to the END of `prisma migrate dev && prisma generate` (so `--name` hit `generate` and `migrate dev` hung on a prompt, holding the advisory lock → P1002 on retry) → script is `sh -c 'prisma migrate dev "$@" && prisma generate' --`. If a lock is stuck: `select pg_terminate_backend(pid) from pg_locks where locktype='advisory'`.
 - First login after boot is slower (bcrypt warm-up); compare auth timing over several calls, not one.
 
+- Dynamic `import("./worker")` in a CommonJS NodeNext file needs the `.js` extension (`./worker.js`; tsx maps it to the .ts) → also in `typeof import(...)`.
+- Test harness: an empty `PORT=` env var is "set" for dotenv (it won't fill it from .env) and fails `getEnv` → give an explicit value.
+
 ## Carried over from the portfolio
 
 - Mongoose silently drops unknown filter keys, so wrong queries "worked" → PostgreSQL + Prisma with

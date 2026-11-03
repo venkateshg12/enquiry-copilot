@@ -75,7 +75,7 @@ The full list is in [../reference/copy-map.md](../reference/copy-map.md).
 - [x] 05 — [`authenticate`, `/auth/me`, device sessions, Google sign-in](phase-05-authenticate-google.md)
 - [x] 06 — [Rate limiting (+ intake limiters)](phase-06-rate-limiting.md)
 - [x] 07 — [Response cache](phase-07-response-cache.md)
-- [ ] 08 — [BullMQ, DLQ and system email on the Gmail API](phase-08-queue-email.md)
+- [x] 08 — [BullMQ, DLQ and system email on the Gmail API](phase-08-queue-email.md)
 - [ ] 09 — [Next.js web foundation](phase-09-web-foundation.md)
 
 ### Part B — Businesses and intake

@@ -5,7 +5,7 @@ The phase checklist lives in [../docs/phases/README.md](../docs/phases/README.md
 
 ## Current phase
 
-- Phase: 08 — BullMQ, DLQ, email
+- Phase: 09 — Next.js web foundation
 - [ ] (copy Definition of done from phase-01 when starting)
 
 ## Review
