@@ -11,14 +11,15 @@ Legend: ✅ done+verified · 🟡 built, check pending · ⬜ not started · �
 | 03 | PostgreSQL + Prisma: client, tenant extension, migrations | ✅ | Prisma/client/adapter all 7.10.1; /health → ok/up, 503 with postgres stopped, recovers; wrong password fails at boot (28P01); baseline migration in _prisma_migrations; tenant rules (throws w/o scope, system=null, org lower-cased) checked via tsx; copied files identical; prisma.ts differs from PT by TENANT_MODELS + a temporary zero-model type workaround |
 | 04 | Accounts, sessions, refresh rotation, verification links | ✅ | migration `accounts` (3 tables, uuid ids); register→unverified login 401→verify (single use)→refresh rotates; replay of old token after 30s → 'Session revoked' and session row gone; token stored as 64-hex digest, email lower-cased; unknown vs known email ~0.19s each; equal JWT secrets refused at boot; copied files identical; prisma.ts back to only-TENANT_MODELS diff |
 | 05 | authenticate, /auth/me, device sessions, Google sign-in, password reset | 🟡 | authenticate kills revoked-device token on next request; /session isCurrent; /auth/me has no password key; forgot answers identically; reset single-use, revokes all sessions, token not in access-log path; change-password signs out others; bad Google token → 'Invalid Google ID token'; session deletes only in revokeSessions; copies identical. 👤 PENDING: real GOOGLE_CLIENT_ID (placeholder in .env) to test a real Google sign-in (Phase 09 web) |
-| 06–09 | Postgres/Prisma, auth, limiter, cache, queue + email, web | ⬜ | |
+| 06 | Rate limiting (+ intake limiters, daily intake cap) | ✅ | X-RateLimit headers; login 429 on the 11th attempt; /debug-ip resolves 127.0.0.1; Redis stopped → /health 200 and login still answered (memory fallback); checkIntakeCap → true,true,false at cap 2; all 10 COPY files identical to PaperTrail; intake limiters compile (attached in Phase 13) |
+| 07–09 | Postgres/Prisma, auth, limiter, cache, queue + email, web | ⬜ | |
 | 10–14 | Businesses, invites, info sheet, intake + outbox, widget | ⬜ | |
 | 15–22 | Model layer, classify, extract, info selection, draft, safety checks, pipeline, cost | ⬜ 👤 NVIDIA key | |
 | 23–28 | Inbox, approve/send, Gmail channel, bookings, stats, privacy | ⬜ 👤 Gmail OAuth | |
 | 29–33 | Eval set, Prompt Lab iteration + Playbook variants, tests, deploy, ship + pilot | ⬜ 👤 labels, pilot | |
 
 ## Next steps
-1. Phase 06 (rate limiting).
+1. Phase 07 (response cache).
 
 ## Known limits (for README/ADRs)
 - _(add as found)_

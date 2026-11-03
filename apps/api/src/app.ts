@@ -2,12 +2,15 @@ import express from "express";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { CORS_ORIGIN, NODE_ENV } from "./constants/env";
+import { CORS_ORIGIN, DEBUG_IP_ENDPOINT, NODE_ENV } from "./constants/env";
 import { ok } from "./utils/api";
 import { notFound } from "./middleware/notFound";
 import { errorHandler } from "./middleware/errorHandler";
 import { requestId } from "./middleware/requestId";
 import { isDbHealthy } from "./config/db";
+import { extractClientIp, trustProxy } from "./utils/rateLimiter/ipExtractor";
+import { visitorIdMiddleware } from "./middleware/visitorId";
+import { globalLimiter } from "./config/rateLimiter";
 import { authRoutes } from "./routes/auth.route";
 import sessionRoutes from "./routes/session.route";
 
@@ -18,9 +21,12 @@ import sessionRoutes from "./routes/session.route";
 export const createApp = () => {
     const app = express();
 
+    /*
+      Trust exactly the proxies the rate limiter trusts, so req.ip and the limiter agree on the client.
+     */
+    app.set("trust proxy", trustProxy);
     // First, so even a helmet or CORS rejection carries an id.
     app.use(requestId);
-    // Phase 06: trust proxy + limiters.
     app.use(
         helmet({
             crossOriginResourcePolicy: { policy: "cross-origin" },
@@ -34,6 +40,33 @@ export const createApp = () => {
 
     app.use(express.json({ limit: "100kb" })); // messages are ≤ 5,000 chars; nothing here is big
     app.use(cookieParser());
+    app.use(visitorIdMiddleware);
+    app.use(globalLimiter);
+
+    /*
+      Shows how the rate limiter identifies the caller, to check TRUSTED_PROXY_CIDRS on a real deploy.
+      Off unless DEBUG_IP_ENDPOINT=true: it echoes proxy headers and reveals which ones are trusted.
+      Declared before the routers mounted at "/" for the same reason as /health below.
+     */
+    if (DEBUG_IP_ENDPOINT === "true") {
+        app.get("/debug-ip", (req, res) => {
+            const peer = req.socket.remoteAddress;
+            res.json(
+                ok({
+                    resolvedIp: extractClientIp(req),
+                    expressReqIp: req.ip,
+                    tcpPeer: peer,
+                    peerIsTrustedProxy: peer ? trustProxy(peer) : false,
+                    visitorId: req.visitorId ?? null,
+                    headers: {
+                        "cf-connecting-ip": req.headers["cf-connecting-ip"] ?? null,
+                        "x-forwarded-for": req.headers["x-forwarded-for"] ?? null,
+                        "true-client-ip": req.headers["true-client-ip"] ?? null,
+                    },
+                })
+            );
+        });
+    }
 
     // Health first, so routers that call router.use(authenticate) can never shadow it.
     app.get("/health", async (_req, res) => {

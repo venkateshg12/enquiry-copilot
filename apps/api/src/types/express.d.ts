@@ -6,7 +6,8 @@ declare global {
             userId: string;
             sessionId: string;
             role: User["role"];
-            // Phase 06: visitorId. Phase 10: orgId, orgRole.
+            visitorId?: string;
+            // Phase 10: orgId, orgRole.
         }
     }
 }

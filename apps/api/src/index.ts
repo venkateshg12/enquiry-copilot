@@ -1,6 +1,6 @@
 // Phase 32: import "./instrument" first
 import "dotenv/config";
-import { NODE_ENV, PORT, RUN_WORKERS_IN_API } from "./constants/env";
+import { NODE_ENV, PORT, RUN_WORKERS_IN_API, TRUSTED_PROXY_CIDRS } from "./constants/env";
 import { createApp } from "./app";
 import { logger } from "./utils/logger";
 import { connectDB, disconnectDB } from "./config/db";
@@ -17,8 +17,11 @@ async function main() {
         logger.info("[startup] RUN_WORKERS_IN_API=false — worker processing delegated to standalone worker");
     }
 
-    if (NODE_ENV === "production") {
-        // Phase 06: warn when TRUSTED_PROXY_CIDRS is empty behind a proxy.
+    if (NODE_ENV === "production" && !TRUSTED_PROXY_CIDRS.trim()) {
+        logger.warn(
+            "TRUSTED_PROXY_CIDRS is empty. If this server runs behind a load balancer or reverse proxy, " +
+            "every client will share that proxy's IP and one rate-limit bucket. See .env.example."
+        );
     }
 
     const app = createApp();
