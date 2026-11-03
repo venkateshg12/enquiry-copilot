@@ -15,3 +15,4 @@ from `docs/phases/`. Rules in `CLAUDE.md`. Status in `tracker.md`.
 
 ## Built so far
 - Phase 00: monorepo, 3 shared packages, docker-compose (postgres 17, redis, redis-cache), api placeholder.
+- Phase 01: Express 5 bootstrap (env, error trio, envelope, createApp, /health, ordered shutdown, worker.ts stub). Port 5000 is also used by Playbook dev API — verify the API with PORT=5050 and 127.0.0.1.
