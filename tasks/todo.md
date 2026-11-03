@@ -5,7 +5,7 @@ The phase checklist lives in [../docs/phases/README.md](../docs/phases/README.md
 
 ## Current phase
 
-- Phase: 03 — PostgreSQL + Prisma
+- Phase: 04 — Accounts, sessions
 - [ ] (copy Definition of done from phase-01 when starting)
 
 ## Review

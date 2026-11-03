@@ -70,7 +70,7 @@ The full list is in [../reference/copy-map.md](../reference/copy-map.md).
 - [x] 00 — [Monorepo, packages, docker-compose](phase-00-monorepo-setup.md)
 - [x] 01 — [API bootstrap: env, errors, envelope, `createApp`, health, shutdown](phase-01-api-bootstrap.md)
 - [x] 02 — [Logging, request ids, PII redaction](phase-02-logging-pii-redaction.md)
-- [ ] 03 — [PostgreSQL + Prisma: client, tenant extension, migrations](phase-03-postgres-prisma.md)
+- [x] 03 — [PostgreSQL + Prisma: client, tenant extension, migrations](phase-03-postgres-prisma.md)
 - [ ] 04 — [Accounts, sessions, refresh rotation, verification links](phase-04-accounts-sessions.md)
 - [ ] 05 — [`authenticate`, `/auth/me`, device sessions, Google sign-in](phase-05-authenticate-google.md)
 - [ ] 06 — [Rate limiting (+ intake limiters)](phase-06-rate-limiting.md)

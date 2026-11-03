@@ -3,11 +3,12 @@ import "dotenv/config";
 import { NODE_ENV, PORT, RUN_WORKERS_IN_API } from "./constants/env";
 import { createApp } from "./app";
 import { logger } from "./utils/logger";
+import { connectDB, disconnectDB } from "./config/db";
 import { closeWorkers, initSchedulers, startRelay } from "./worker";
 
 async function main() {
     // Phase 15: setCallRecorder(recordCall)
-    // Phase 03: await connectDB()
+    await connectDB();
     if (RUN_WORKERS_IN_API !== "false") {
         await initSchedulers();
         startRelay();
@@ -54,7 +55,7 @@ async function main() {
             }
             // Phase 21: await closePubSub()
             // Phase 07: await cache.close()
-            // Phase 03: await disconnectDB()
+            await disconnectDB();
             // Phase 32: await flushObservability()
             logger.info("[shutdown] complete");
             process.exit(0);

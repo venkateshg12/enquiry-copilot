@@ -23,6 +23,8 @@ One entry per correction or surprise: **pattern → rule that prevents it**.
 - Playbook's dev API also listens on :5000 (`localhost` resolves to IPv6 first) → verify this API on `PORT=5050` against `127.0.0.1`.
 - `_(add as you go)_
 
+- Prisma 7.10.1 generates a client with zero models, but `$allModels` is typed `never`, so the copied tenant extension fails `tsc` → `@ts-expect-error` + explicit param types in `db/prisma.ts` until Phase 04 adds a model (TS flags the directive as unused then; delete it and the annotation).
+
 ## Carried over from the portfolio
 
 - Mongoose silently drops unknown filter keys, so wrong queries "worked" → PostgreSQL + Prisma with

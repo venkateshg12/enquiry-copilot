@@ -27,3 +27,5 @@ export const SERVICE_NAME = getEnv("SERVICE_NAME", "api");
 // Salt for contactRef(): log lines can correlate a contact without containing it. Rotating it
 // only breaks correlation across the rotation, nothing else.
 export const CONTACT_HASH_SALT = getEnv("CONTACT_HASH_SALT");
+// postgresql://user:password@host:5432/db. Hosted (Neon): add ?sslmode=require.
+export const DATABASE_URL = getEnv("DATABASE_URL");
