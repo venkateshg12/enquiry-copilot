@@ -79,3 +79,18 @@ storybook-static/
 
 # Prisma client is generated on install (Phase 03)
 apps/api/src/generated/
+
+# Internal docs and tasks (local only)
+/docs/
+/tasks/
+
+# Markdown files (ignore everything except README and CLAUDE)
+*.md
+*.MD
+!README.md
+!README.MD
+!readme.md
+!CLAUDE.md
+!CLAUDE.MD
+!claude.md
+
