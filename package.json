@@ -1,5 +1,5 @@
 {
-  "name": "ai-enquiry-assistant",
+  "name": "enquiry-copilot",
   "private": true,
   "scripts": {
     "build": "turbo run build",

@@ -33,7 +33,7 @@ for f in sorted(glob.glob(os.path.join(root, 'docs/phases/phase-*.md'))):
                 tag = tm.group(1).replace('→COPY', '')
                 src = re.search(r'(@[a-z]+-[a-z]+/\S*)', tm.group(2))
                 note = tm.group(2).strip()
-                rows.append((re.sub(r'^ai-enquiry-assistant/','',full.rstrip()), tag, src.group(1).rstrip(',;)') if src else '—', phase, note))
+                rows.append((re.sub(r'^(?:ai-enquiry-assistant|enquiry-copilot)/','',full.rstrip()), tag, src.group(1).rstrip(',;)') if src else '—', phase, note))
 def area(p):
     for a in ('apps/api/prisma','apps/api/src','apps/api/evals','apps/api/test','apps/api','apps/web','apps/widget','packages','.github'):
         if p.startswith(a): return a
