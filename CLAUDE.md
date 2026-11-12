@@ -4,7 +4,7 @@ Guidance for Claude Code (and other assistants) in this repository.
 
 ## What this repo is
 
-AI Enquiry Assistant: classify → extract → draft → code checks → **human approval** → send. Built
+Enquiry Copilot: classify → extract → draft → code checks → **human approval** → send. Built
 phase by phase from `docs/phases/`. **Read `docs/phases/README.md` first.**
 
 Copy sources (read-only):

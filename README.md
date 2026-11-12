@@ -1,4 +1,4 @@
-# AI Enquiry Assistant
+# Enquiry Copilot
 
 **Reads a small business's incoming customer messages, sorts them, pulls out the details and drafts
 replies in the business's tone. A human approves every reply before it is sent.**
