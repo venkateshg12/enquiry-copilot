@@ -5,7 +5,7 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
-export const metadata: Metadata = { title: "AI Enquiry Assistant",
+export const metadata: Metadata = { title: "Enquiry Copilot",
     description: "Draft replies to customer messages — a person approves every one", };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
