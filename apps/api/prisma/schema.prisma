@@ -1,4 +1,4 @@
-// The AI Enquiry Assistant's data model on PostgreSQL. Every tenant-owned table carries `org_id`
+// The Enquiry Copilot data model on PostgreSQL. Every tenant-owned table carries `org_id`
 // (a business is an org); the tenant extension in src/db/prisma.ts scopes every query to the
 // caller's business (TENANT_MODELS there). Full target model: docs/reference/data-model.md.
 //

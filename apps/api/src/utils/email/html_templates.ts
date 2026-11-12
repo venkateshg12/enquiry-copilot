@@ -18,7 +18,7 @@ export const passwordResetTemplate = (resetLink: string) => (
     <tr>
     <td style="background:#111827;padding:30px;text-align:center;">
     <h1 style="margin:0;color:#ffffff;">
-    AI Enquiry Assistant
+    Enquiry Copilot
     </h1>
     </td>
     </tr>
@@ -77,7 +77,7 @@ export const passwordResetTemplate = (resetLink: string) => (
     <tr>
     <td style="background:#f9fafb;padding:20px;text-align:center;">
     <p style="margin:0;color:#6b7280;font-size:13px;">
-    © ${new Date().getFullYear()} AI Enquiry Assistant.
+    © ${new Date().getFullYear()} Enquiry Copilot.
     All rights reserved.
     </p>
     </td>
@@ -120,7 +120,7 @@ export const emailVerificationTemplate = (verificationLink: string) => (
     <tr>
     <td style="background:#111827;padding:30px;text-align:center;">
     <h1 style="margin:0;color:#ffffff;">
-    AI Enquiry Assistant
+    Enquiry Copilot
     </h1>
     </td>
     </tr>
@@ -178,7 +178,7 @@ export const emailVerificationTemplate = (verificationLink: string) => (
     <tr>
     <td style="background:#f9fafb;padding:20px;text-align:center;">
     <p style="margin:0;color:#6b7280;font-size:13px;">
-    © ${new Date().getFullYear()} AI Enquiry Assistant.
+    © ${new Date().getFullYear()} Enquiry Copilot.
     All rights reserved.
     </p>
 </td>
